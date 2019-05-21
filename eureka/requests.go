@@ -153,7 +153,10 @@ func NewInstanceInfo(hostName, app, ip string, port int, ttl uint, isSsl bool) *
 		instanceInfo.Port.Enabled = true
 		instanceInfo.Port.Port = port
 	}
-	instanceInfo.StatusPageUrl = protocol + "://" + hostName + stringPort + "/info"
+	url := protocol + "://" + hostName + stringPort
+	instanceInfo.StatusPageUrl = url + "/info"
+	instanceInfo.HomePageUrl = url + "/"
+	instanceInfo.HealthCheckUrl = url + "/health"
 	return instanceInfo
 }
 
