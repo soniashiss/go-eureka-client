@@ -9,6 +9,8 @@ Forked from https://github.com/ArthurHlt/go-eureka-client which is based on code
 
 * Add homePageUrl and healthCheckUrl
 
+* Modify example to make the client action be same with Java @EnableEureka
+
 ## Getting started
 
 ```go
@@ -21,16 +23,23 @@ func main() {
 		"http://127.0.0.1:8761/eureka", //From a spring boot based eureka server
 		// add others servers here
 	})
-	instance := eureka.NewInstanceInfo("test.com", "test", "69.172.200.235", 80, 30, false) //Create a new instance to register
+	hostname := "test.com"
+	appId := "test"
+	thisIP := "69.172.200.235"
+	thisPort := 80
+	port := "80"
+	instance := eureka.NewInstanceInfo(hostname, appId, thisIP, thisPort, false) //Create a new instance to register
+	instanceId := hostname + ":" + appId + ":" + port
 	instance.Metadata = &eureka.MetaData{
-		Map: make(map[string]string),
+		Map: map[string]string{
+        	"instanceId": instanceId,
+        	},
 	}
-	instance.Metadata.Map["foo"] = "bar" //add metadata for example
-	client.RegisterInstance("myapp", instance) // Register new instance in your eureka(s)
+	client.RegisterInstance(appId, instance) // Register new instance in your eureka(s)
 	applications, _ := client.GetApplications() // Retrieves all applications from eureka server(s)
 	client.GetApplication(instance.App) // retrieve the application "test"
-	client.GetInstance(instance.App, instance.HostName) // retrieve the instance from "test.com" inside "test"" app
-	client.SendHeartbeat(instance.App, instance.HostName) // say to eureka that your app is alive (here you must send heartbeat before 30 sec)
+	client.GetInstance(instance.App, instanceId) // retrieve the instance from "test.com" inside "test"" app
+	client.SendHeartbeat(instance.App, instanceId) // say to eureka that your app is alive (here you must send heartbeat before 30 sec)
 }
 ```
 
