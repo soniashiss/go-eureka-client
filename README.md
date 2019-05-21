@@ -1,7 +1,11 @@
 Go Eureka Client
 ================
 
-Based on code from https://github.com/bryanstephens/go-eureka-client .
+## Modify
+
+Forked from https://github.com/ArthurHlt/go-eureka-client which is based on code from https://github.com/bryanstephens/go-eureka-client .
+
+Modified InstanceInfo.VipAddress and InstanceInfo.secureVipAddress to AppId to enable ribbon work
 
 ## Getting started
 
